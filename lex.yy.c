@@ -807,96 +807,102 @@ YY_RULE_SETUP
 case 9:
 YY_RULE_SETUP
 #line 21 "mylexer.l"
-{ return IDENTIFIER; }
+{
+    yylval.string = strdup(yytext); // Store the identifier text
+    return IDENTIFIER;
+}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 22 "mylexer.l"
-{ return NUMBER; }
+#line 25 "mylexer.l"
+{
+    yylval.num = atoi(yytext); // Convert number text to integer
+    return NUMBER;
+}
 	YY_BREAK
 /* operators*/
 case 11:
 YY_RULE_SETUP
-#line 25 "mylexer.l"
+#line 32 "mylexer.l"
 { return MULTIPLY; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 26 "mylexer.l"
+#line 33 "mylexer.l"
 { return DIVIDE; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 27 "mylexer.l"
+#line 34 "mylexer.l"
 { return PLUS; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 28 "mylexer.l"
+#line 35 "mylexer.l"
 { return MINUS; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 30 "mylexer.l"
+#line 37 "mylexer.l"
 { return ASSIGN; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 32 "mylexer.l"
+#line 39 "mylexer.l"
 { return LEFT_PARENTHESIS; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 33 "mylexer.l"
+#line 40 "mylexer.l"
 { return RIGHT_PARENTHESIS; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 35 "mylexer.l"
+#line 42 "mylexer.l"
 { return SEMICOLON; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 37 "mylexer.l"
+#line 44 "mylexer.l"
 { return LESS; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 38 "mylexer.l"
+#line 45 "mylexer.l"
 { return EQUALS; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 40 "mylexer.l"
+#line 47 "mylexer.l"
 { return END_OF_FILE; }
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 42 "mylexer.l"
+#line 49 "mylexer.l"
 ;  // ignore whitespace
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 43 "mylexer.l"
+#line 50 "mylexer.l"
 ;  // ignore single-line comments
 	YY_BREAK
 case 23:
 /* rule 23 can match eol */
 YY_RULE_SETUP
-#line 44 "mylexer.l"
+#line 51 "mylexer.l"
 ;  // Ignore multi-line comments
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 45 "mylexer.l"
+#line 52 "mylexer.l"
 { return UNKNOWN; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 46 "mylexer.l"
+#line 53 "mylexer.l"
 ECHO;
 	YY_BREAK
-#line 900 "lex.yy.c"
+#line 906 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1899,5 +1905,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 46 "mylexer.l"
+#line 53 "mylexer.l"
 

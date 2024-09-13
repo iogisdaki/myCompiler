@@ -17,8 +17,15 @@
 "write"     { return WRITE; }
 
   /* identifiers and numbers*/
-[a-zA-Z_][a-zA-Z0-9_]*  { return IDENTIFIER; }
-[0-9]+      { return NUMBER; }
+[a-zA-Z_][a-zA-Z0-9_]*  {
+    yylval.string = strdup(yytext); // Store the identifier text
+    return IDENTIFIER;
+}
+[0-9]+      {
+    yylval.num = atoi(yytext); // Convert number text to integer
+    return NUMBER;
+}
+
 
   /* operators*/
 "*"         { return MULTIPLY; }
