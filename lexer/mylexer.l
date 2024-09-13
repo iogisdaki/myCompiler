@@ -9,10 +9,10 @@
 %%
   /* keywords */
 "if"        { std::cout << "IF" << std::endl; }
-"then"        { std::cout << "THEN" << std::endl; }
+"then"      { std::cout << "THEN" << std::endl; }
 "else"      { std::cout << "ELSE" << std::endl; }
-"end"        { std::cout << "END" << std::endl; }
-"repeat"     { std::cout << "REPEAT" << std::endl; }
+"end"       { std::cout << "END" << std::endl; }
+"repeat"    { std::cout << "REPEAT" << std::endl; }
 "until"     { std::cout << "UNTIL" << std::endl; }
 "read"      { std::cout << "READ" << std::endl; }
 "write"     { std::cout << "WRITE" << std::endl; }
@@ -27,10 +27,10 @@
 "+"         { std::cout << "PLUS" << std::endl; }
 "-"         { std::cout << "MINUS" << std::endl; }
 
-":="         { std::cout << "ASSIGN" << std::endl; }
+":="        { std::cout << "ASSIGN" << std::endl; }
 
-"("         { std::cout << "LPAREN" << std::endl; }
-")"         { std::cout << "RPAREN" << std::endl; }
+"("         { std::cout << "LEFT_PARENTHESIS" << std::endl; }
+")"         { std::cout << "RIGHT_PARENTHESIS" << std::endl; }
 
 ";"         { std::cout << "SEMICOLON" << std::endl; }
 
