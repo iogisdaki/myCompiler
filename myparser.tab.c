@@ -66,6 +66,23 @@
 
 
 
+/* First part of user prologue.  */
+#line 1 "myparser.y"
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Forward declarations */
+void yyerror(const char *s);
+int yylex(void);
+
+/* Implement yyerror */
+void yyerror(const char *s) {
+    fprintf(stderr, "Error: %s\n", s);
+}
+
+
+#line 86 "myparser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -88,64 +105,7 @@
 #  endif
 # endif
 
-
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
-
-/* Token kinds.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    IF = 258,                      /* IF  */
-    THEN = 259,                    /* THEN  */
-    ELSE = 260,                    /* ELSE  */
-    END = 261,                     /* END  */
-    REPEAT = 262,                  /* REPEAT  */
-    UNTIL = 263,                   /* UNTIL  */
-    READ = 264,                    /* READ  */
-    WRITE = 265,                   /* WRITE  */
-    IDENTIFIER = 266,              /* IDENTIFIER  */
-    NUMBER = 267,                  /* NUMBER  */
-    MULTIPLY = 268,                /* MULTIPLY  */
-    DIVIDE = 269,                  /* DIVIDE  */
-    PLUS = 270,                    /* PLUS  */
-    MINUS = 271,                   /* MINUS  */
-    ASSIGN = 272,                  /* ASSIGN  */
-    LEFT_PARENTHESIS = 273,        /* LEFT_PARENTHESIS  */
-    RIGHT_PARENTHESIS = 274,       /* RIGHT_PARENTHESIS  */
-    SEMICOLON = 275,               /* SEMICOLON  */
-    LESS = 276,                    /* LESS  */
-    EQUALS = 277,                  /* EQUALS  */
-    END_OF_FILE = 278              /* END_OF_FILE  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
-#endif
-
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
-#endif
-
-
-extern YYSTYPE yylval;
-
-
-int yyparse (void);
-
-
-
+#include "myparser.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -174,20 +134,21 @@ enum yysymbol_kind_t
   YYSYMBOL_LESS = 21,                      /* LESS  */
   YYSYMBOL_EQUALS = 22,                    /* EQUALS  */
   YYSYMBOL_END_OF_FILE = 23,               /* END_OF_FILE  */
-  YYSYMBOL_YYACCEPT = 24,                  /* $accept  */
-  YYSYMBOL_program = 25,                   /* program  */
-  YYSYMBOL_statement_sequence = 26,        /* statement_sequence  */
-  YYSYMBOL_statement = 27,                 /* statement  */
-  YYSYMBOL_assign_statement = 28,          /* assign_statement  */
-  YYSYMBOL_read_statement = 29,            /* read_statement  */
-  YYSYMBOL_write_statement = 30,           /* write_statement  */
-  YYSYMBOL_if_statement = 31,              /* if_statement  */
-  YYSYMBOL_repeat_statement = 32,          /* repeat_statement  */
-  YYSYMBOL_factor = 33,                    /* factor  */
-  YYSYMBOL_term = 34,                      /* term  */
-  YYSYMBOL_simple_expression = 35,         /* simple_expression  */
-  YYSYMBOL_relational_expression = 36,     /* relational_expression  */
-  YYSYMBOL_expression = 37                 /* expression  */
+  YYSYMBOL_UNKNOWN = 24,                   /* UNKNOWN  */
+  YYSYMBOL_YYACCEPT = 25,                  /* $accept  */
+  YYSYMBOL_program = 26,                   /* program  */
+  YYSYMBOL_statement_sequence = 27,        /* statement_sequence  */
+  YYSYMBOL_statement = 28,                 /* statement  */
+  YYSYMBOL_assign_statement = 29,          /* assign_statement  */
+  YYSYMBOL_read_statement = 30,            /* read_statement  */
+  YYSYMBOL_write_statement = 31,           /* write_statement  */
+  YYSYMBOL_if_statement = 32,              /* if_statement  */
+  YYSYMBOL_repeat_statement = 33,          /* repeat_statement  */
+  YYSYMBOL_factor = 34,                    /* factor  */
+  YYSYMBOL_term = 35,                      /* term  */
+  YYSYMBOL_simple_expression = 36,         /* simple_expression  */
+  YYSYMBOL_relational_expression = 37,     /* relational_expression  */
+  YYSYMBOL_expression = 38                 /* expression  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -518,7 +479,7 @@ union yyalloc
 #define YYLAST   46
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  24
+#define YYNTOKENS  25
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  14
 /* YYNRULES -- Number of rules.  */
@@ -527,7 +488,7 @@ union yyalloc
 #define YYNSTATES  52
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   278
+#define YYMAXUTOK   279
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -568,16 +529,16 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,     7,     7,    10,    11,    14,    15,    16,    17,    18,
-      21,    24,    27,    30,    31,    34,    37,    38,    39,    42,
-      43,    44,    47,    48,    49,    52,    53,    54,    57
+       0,    21,    21,    24,    25,    28,    29,    30,    31,    32,
+      35,    38,    41,    44,    45,    48,    51,    52,    53,    56,
+      57,    58,    61,    62,    63,    66,    67,    68,    71
 };
 #endif
 
@@ -597,7 +558,7 @@ static const char *const yytname[] =
   "END", "REPEAT", "UNTIL", "READ", "WRITE", "IDENTIFIER", "NUMBER",
   "MULTIPLY", "DIVIDE", "PLUS", "MINUS", "ASSIGN", "LEFT_PARENTHESIS",
   "RIGHT_PARENTHESIS", "SEMICOLON", "LESS", "EQUALS", "END_OF_FILE",
-  "$accept", "program", "statement_sequence", "statement",
+  "UNKNOWN", "$accept", "program", "statement_sequence", "statement",
   "assign_statement", "read_statement", "write_statement", "if_statement",
   "repeat_statement", "factor", "term", "simple_expression",
   "relational_expression", "expression", YY_NULLPTR
@@ -684,20 +645,20 @@ static const yytype_int8 yycheck[] =
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     7,     9,    10,    11,    25,    26,    27,    28,
-      29,    30,    31,    32,    11,    12,    18,    33,    34,    35,
-      36,    37,    26,    11,    11,    17,     0,    20,    37,    13,
-      14,    15,    16,    21,    22,     4,     8,    37,    27,    19,
-      33,    33,    34,    34,    35,    35,    26,    37,     5,     6,
-      26,     6
+       0,     3,     7,     9,    10,    11,    26,    27,    28,    29,
+      30,    31,    32,    33,    11,    12,    18,    34,    35,    36,
+      37,    38,    27,    11,    11,    17,     0,    20,    38,    13,
+      14,    15,    16,    21,    22,     4,     8,    38,    28,    19,
+      34,    34,    35,    35,    36,    36,    27,    38,     5,     6,
+      27,     6
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    24,    25,    26,    26,    27,    27,    27,    27,    27,
-      28,    29,    30,    31,    31,    32,    33,    33,    33,    34,
-      34,    34,    35,    35,    35,    36,    36,    36,    37
+       0,    25,    26,    27,    27,    28,    28,    28,    28,    28,
+      29,    30,    31,    32,    32,    33,    34,    34,    34,    35,
+      35,    35,    36,    36,    36,    37,    37,    37,    38
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -1169,7 +1130,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1173 "myparser.tab.c"
+#line 1134 "myparser.tab.c"
 
       default: break;
     }
@@ -1362,17 +1323,10 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 59 "myparser.y"
+#line 73 "myparser.y"
 
-
-// Error handling function
-void yyerror(const char *s) {
-    std::cerr << "Error: " << s << std::endl;
-    exit(1);
-}
 
 // Main function
 int main() {
-    yyparse();
-    return 0;
+    return yyparse();
 }

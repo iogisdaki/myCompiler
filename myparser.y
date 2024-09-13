@@ -1,5 +1,19 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
 
-%token IF THEN ELSE END REPEAT UNTIL READ WRITE IDENTIFIER NUMBER MULTIPLY DIVIDE PLUS MINUS ASSIGN LEFT_PARENTHESIS RIGHT_PARENTHESIS SEMICOLON LESS EQUALS END_OF_FILE
+/* Forward declarations */
+void yyerror(const char *s);
+int yylex(void);
+
+/* Implement yyerror */
+void yyerror(const char *s) {
+    fprintf(stderr, "Error: %s\n", s);
+}
+
+%}
+
+%token IF THEN ELSE END REPEAT UNTIL READ WRITE IDENTIFIER NUMBER MULTIPLY DIVIDE PLUS MINUS ASSIGN LEFT_PARENTHESIS RIGHT_PARENTHESIS SEMICOLON LESS EQUALS END_OF_FILE UNKNOWN
 
 %%
 
@@ -58,14 +72,7 @@ expression:
 
 %%
 
-// Error handling function
-void yyerror(const char *s) {
-    std::cerr << "Error: " << s << std::endl;
-    exit(1);
-}
-
 // Main function
 int main() {
-    yyparse();
-    return 0;
+    return yyparse();
 }
