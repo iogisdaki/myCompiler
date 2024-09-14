@@ -75,14 +75,15 @@
 /* Forward declarations */
 void yyerror(const char *s);
 int yylex(void);
+extern char* yytext;
 
 /* Implement yyerror */
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
+    fprintf(stderr, "Error: %s at '%s'\n", s, yytext);
 }
 
 
-#line 86 "myparser.tab.c"
+#line 87 "myparser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -133,22 +134,21 @@ enum yysymbol_kind_t
   YYSYMBOL_SEMICOLON = 20,                 /* SEMICOLON  */
   YYSYMBOL_LESS = 21,                      /* LESS  */
   YYSYMBOL_EQUALS = 22,                    /* EQUALS  */
-  YYSYMBOL_END_OF_FILE = 23,               /* END_OF_FILE  */
-  YYSYMBOL_UNKNOWN = 24,                   /* UNKNOWN  */
-  YYSYMBOL_YYACCEPT = 25,                  /* $accept  */
-  YYSYMBOL_program = 26,                   /* program  */
-  YYSYMBOL_statement_sequence = 27,        /* statement_sequence  */
-  YYSYMBOL_statement = 28,                 /* statement  */
-  YYSYMBOL_assign_statement = 29,          /* assign_statement  */
-  YYSYMBOL_read_statement = 30,            /* read_statement  */
-  YYSYMBOL_write_statement = 31,           /* write_statement  */
-  YYSYMBOL_if_statement = 32,              /* if_statement  */
-  YYSYMBOL_repeat_statement = 33,          /* repeat_statement  */
-  YYSYMBOL_factor = 34,                    /* factor  */
-  YYSYMBOL_term = 35,                      /* term  */
-  YYSYMBOL_simple_expression = 36,         /* simple_expression  */
-  YYSYMBOL_relational_expression = 37,     /* relational_expression  */
-  YYSYMBOL_expression = 38                 /* expression  */
+  YYSYMBOL_UNKNOWN = 23,                   /* UNKNOWN  */
+  YYSYMBOL_YYACCEPT = 24,                  /* $accept  */
+  YYSYMBOL_program = 25,                   /* program  */
+  YYSYMBOL_statement_sequence = 26,        /* statement_sequence  */
+  YYSYMBOL_statement = 27,                 /* statement  */
+  YYSYMBOL_assign_statement = 28,          /* assign_statement  */
+  YYSYMBOL_read_statement = 29,            /* read_statement  */
+  YYSYMBOL_write_statement = 30,           /* write_statement  */
+  YYSYMBOL_if_statement = 31,              /* if_statement  */
+  YYSYMBOL_repeat_statement = 32,          /* repeat_statement  */
+  YYSYMBOL_factor = 33,                    /* factor  */
+  YYSYMBOL_term = 34,                      /* term  */
+  YYSYMBOL_simple_expression = 35,         /* simple_expression  */
+  YYSYMBOL_relational_expression = 36,     /* relational_expression  */
+  YYSYMBOL_expression = 37                 /* expression  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -479,7 +479,7 @@ union yyalloc
 #define YYLAST   46
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  25
+#define YYNTOKENS  24
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  14
 /* YYNRULES -- Number of rules.  */
@@ -488,7 +488,7 @@ union yyalloc
 #define YYNSTATES  52
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   279
+#define YYMAXUTOK   278
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -529,16 +529,16 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23,    24
+      15,    16,    17,    18,    19,    20,    21,    22,    23
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    26,    26,    29,    30,    33,    34,    35,    36,    37,
-      40,    43,    46,    49,    50,    53,    56,    57,    58,    61,
-      62,    63,    66,    67,    68,    71,    72,    73,    76
+       0,    28,    28,    31,    32,    35,    36,    37,    38,    39,
+      42,    45,    48,    51,    52,    55,    58,    59,    60,    63,
+      64,    65,    68,    69,    70,    73,    74,    75,    78
 };
 #endif
 
@@ -557,11 +557,11 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "IF", "THEN", "ELSE",
   "END", "REPEAT", "UNTIL", "READ", "WRITE", "IDENTIFIER", "NUMBER",
   "MULTIPLY", "DIVIDE", "PLUS", "MINUS", "ASSIGN", "LEFT_PARENTHESIS",
-  "RIGHT_PARENTHESIS", "SEMICOLON", "LESS", "EQUALS", "END_OF_FILE",
-  "UNKNOWN", "$accept", "program", "statement_sequence", "statement",
-  "assign_statement", "read_statement", "write_statement", "if_statement",
-  "repeat_statement", "factor", "term", "simple_expression",
-  "relational_expression", "expression", YY_NULLPTR
+  "RIGHT_PARENTHESIS", "SEMICOLON", "LESS", "EQUALS", "UNKNOWN", "$accept",
+  "program", "statement_sequence", "statement", "assign_statement",
+  "read_statement", "write_statement", "if_statement", "repeat_statement",
+  "factor", "term", "simple_expression", "relational_expression",
+  "expression", YY_NULLPTR
 };
 
 static const char *
@@ -645,20 +645,20 @@ static const yytype_int8 yycheck[] =
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     7,     9,    10,    11,    26,    27,    28,    29,
-      30,    31,    32,    33,    11,    12,    18,    34,    35,    36,
-      37,    38,    27,    11,    11,    17,     0,    20,    38,    13,
-      14,    15,    16,    21,    22,     4,     8,    38,    28,    19,
-      34,    34,    35,    35,    36,    36,    27,    38,     5,     6,
-      27,     6
+       0,     3,     7,     9,    10,    11,    25,    26,    27,    28,
+      29,    30,    31,    32,    11,    12,    18,    33,    34,    35,
+      36,    37,    26,    11,    11,    17,     0,    20,    37,    13,
+      14,    15,    16,    21,    22,     4,     8,    37,    27,    19,
+      33,    33,    34,    34,    35,    35,    26,    37,     5,     6,
+      26,     6
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    25,    26,    27,    27,    28,    28,    28,    28,    28,
-      29,    30,    31,    32,    32,    33,    34,    34,    34,    35,
-      35,    35,    36,    36,    36,    37,    37,    37,    38
+       0,    24,    25,    26,    26,    27,    27,    27,    27,    27,
+      28,    29,    30,    31,    31,    32,    33,    33,    33,    34,
+      34,    34,    35,    35,    35,    36,    36,    36,    37
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -1323,10 +1323,11 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 78 "myparser.y"
+#line 80 "myparser.y"
 
 
 // Main function
 int main() {
+    yydebug = 1;  // enable debugging
     return yyparse();
 }

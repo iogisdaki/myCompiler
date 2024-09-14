@@ -1,9 +1,8 @@
 %{
 #include "myparser.tab.h"
+extern int yywrap(void) {}
 %}
 
-%option noyywrap 
-/* we deal with EOF later */
 
 %%
   /* keywords */
@@ -42,8 +41,6 @@
 
 "<"         { return LESS; }
 "="         { return EQUALS; }
-
-<<EOF>>     { return END_OF_FILE; }
 
 [ \t\n]+    ;  // ignore whitespace
 "//".*      ;  // ignore single-line comments

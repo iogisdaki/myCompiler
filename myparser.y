@@ -5,20 +5,22 @@
 /* Forward declarations */
 void yyerror(const char *s);
 int yylex(void);
+extern char* yytext;
 
 /* Implement yyerror */
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
+    fprintf(stderr, "Error: %s at '%s'\n", s, yytext);
 }
 
 %}
 
+%debug
 %union {
     int num;
     char* string;
 }
 
-%token <num> IF THEN ELSE END REPEAT UNTIL READ WRITE IDENTIFIER NUMBER MULTIPLY DIVIDE PLUS MINUS ASSIGN LEFT_PARENTHESIS RIGHT_PARENTHESIS SEMICOLON LESS EQUALS END_OF_FILE UNKNOWN
+%token <num> IF THEN ELSE END REPEAT UNTIL READ WRITE IDENTIFIER NUMBER MULTIPLY DIVIDE PLUS MINUS ASSIGN LEFT_PARENTHESIS RIGHT_PARENTHESIS SEMICOLON LESS EQUALS UNKNOWN
 
 %%
 
@@ -79,5 +81,6 @@ expression:
 
 // Main function
 int main() {
+    yydebug = 1;  // enable debugging
     return yyparse();
 }
