@@ -73,6 +73,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+void yyerror(const char *s) {
+    fprintf(stderr, "Error: %s\n", s);
+}
+
+
 /* define the structure for AST nodes */
 typedef struct ASTNode {
     enum {
@@ -101,11 +106,96 @@ ASTNode *createNode(int type) {
     return node;
 }
 
-void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
+const char* getNodeTypeString(int type) {
+    switch(type) {
+        case NODE_PROGRAM: return "Program";
+        case NODE_STATEMENT_SEQUENCE: return "Statement Sequence";
+        case NODE_STATEMENT: return "Statement";
+        case NODE_ASSIGN: return "Assign Statement";
+        case NODE_IF: return "If Statement";
+        case NODE_REPEAT: return "Repeat Statement";
+        case NODE_READ: return "Read Statement";
+        case NODE_WRITE: return "Write Statement";
+        case NODE_FACTOR: return "Factor";
+        case NODE_TERM: return "Term";
+        case NODE_RELATIONAL_OPERATION: return "Relational Operation";
+        case NODE_EXPRESSION: return "Expression";
+        default: return "Unknown";
+    }
 }
 
-#line 109 "myparser.tab.c"
+/* Recursive function to print the AST */
+void AST_print(ASTNode *node, int indent) {
+    if (node == NULL) return;
+
+    for (int i = 0; i < indent; i++) {
+        printf("  ");  // Indentation for better readability
+    }
+    printf("%s\n", getNodeTypeString(node->type));
+
+    /* Recursively print children based on the node type */
+    switch (node->type) {
+        case NODE_PROGRAM:
+            AST_print(node->data.program.statement_sequence, indent + 1);
+            break;
+        case NODE_STATEMENT_SEQUENCE:
+            AST_print(node->data.statement_sequence.statement_sequence, indent + 1);
+            AST_print(node->data.statement_sequence.statement, indent + 1);
+            break;
+        case NODE_ASSIGN:
+            for (int i = 0; i < indent + 1; i++) printf("  ");
+            printf("Identifier: %s\n", node->data.assign_statement.identifier);
+            AST_print(node->data.assign_statement.expression, indent + 1);
+            break;
+        case NODE_IF:
+            AST_print(node->data.if_statement.expression, indent + 1);
+            AST_print(node->data.if_statement.statement_sequence1, indent + 1);
+            if (node->data.if_statement.statement_sequence2 != NULL)
+                AST_print(node->data.if_statement.statement_sequence2, indent + 1);
+            break;
+        case NODE_REPEAT:
+            AST_print(node->data.repeat_statement.statement_sequence, indent + 1);
+            AST_print(node->data.repeat_statement.expression, indent + 1);
+            break;
+        case NODE_READ:
+            for (int i = 0; i < indent + 1; i++) printf("  ");
+            printf("Identifier: %s\n", node->data.read_statement.identifier);
+            break;
+        case NODE_WRITE:
+            for (int i = 0; i < indent + 1; i++) printf("  ");
+            printf("Identifier: %s\n", node->data.write_statement.identifier);
+            break;
+        case NODE_FACTOR:
+            if (node->data.factor.identifier) {
+                for (int i = 0; i < indent + 1; i++) printf("  ");
+                printf("Identifier: %s\n", node->data.factor.identifier);
+            } else {
+                for (int i = 0; i < indent + 1; i++) printf("  ");
+                printf("Number: %d\n", node->data.factor.num);
+            }
+            break;
+        case NODE_TERM:
+            AST_print(node->data.term.term, indent + 1);
+            for (int i = 0; i < indent + 1; i++) printf("  ");
+            printf("Operation: %c\n", node->data.term.operation);
+            AST_print(node->data.term.factor, indent + 1);
+            break;
+        case NODE_RELATIONAL_OPERATION:
+            AST_print(node->data.relative_operation.term, indent + 1);
+            for (int i = 0; i < indent + 1; i++) printf("  ");
+            printf("Operation: %c\n", node->data.relative_operation.operation);
+            AST_print(node->data.relative_operation.simple_expression, indent + 1);
+            break;
+        case NODE_EXPRESSION:
+            AST_print(node->data.expression.relational_expression, indent + 1);
+            break;
+        default:
+            printf("Unknown node type\n");
+            break;
+    }
+}
+
+#line 199 "myparser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -556,11 +646,11 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_int16 yyrline[] =
 {
-       0,    59,    59,    65,    70,    73,    74,    75,    76,    77,
-      80,    87,    93,   101,   108,   114,   120,   121,   125,   133,
-     134,   140,   148,   149,   155,   163,   164,   169,   176
+       0,   149,   149,   156,   161,   164,   165,   166,   167,   168,
+     171,   178,   184,   192,   199,   205,   211,   212,   216,   222,
+     223,   229,   237,   238,   244,   252,   253,   258,   265
 };
 #endif
 
@@ -1152,236 +1242,235 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: statement_sequence  */
-#line 59 "myparser.y"
+#line 149 "myparser.y"
                        {
         (yyval.node) = createNode(NODE_PROGRAM);
         (yyval.node)->data.program.statement_sequence = (yyvsp[0].node);
+        AST_print((yyval.node), 0); 
     }
-#line 1161 "myparser.tab.c"
+#line 1252 "myparser.tab.c"
     break;
 
   case 3: /* statement_sequence: statement_sequence SEMICOLON statement  */
-#line 65 "myparser.y"
+#line 156 "myparser.y"
                                            {
         (yyval.node) = createNode(NODE_STATEMENT_SEQUENCE);
         (yyval.node)->data.statement_sequence.statement_sequence = (yyvsp[-2].node);
         (yyval.node)->data.statement_sequence.statement = (yyvsp[0].node);
     }
-#line 1171 "myparser.tab.c"
+#line 1262 "myparser.tab.c"
     break;
 
   case 4: /* statement_sequence: statement  */
-#line 70 "myparser.y"
+#line 161 "myparser.y"
                 { (yyval.node) = (yyvsp[0].node); }
-#line 1177 "myparser.tab.c"
+#line 1268 "myparser.tab.c"
     break;
 
   case 5: /* statement: assign_statement  */
-#line 73 "myparser.y"
+#line 164 "myparser.y"
                      { (yyval.node) = (yyvsp[0].node); }
-#line 1183 "myparser.tab.c"
+#line 1274 "myparser.tab.c"
     break;
 
   case 6: /* statement: if_statement  */
-#line 74 "myparser.y"
+#line 165 "myparser.y"
                    { (yyval.node) = (yyvsp[0].node); }
-#line 1189 "myparser.tab.c"
+#line 1280 "myparser.tab.c"
     break;
 
   case 7: /* statement: repeat_statement  */
-#line 75 "myparser.y"
+#line 166 "myparser.y"
                        { (yyval.node) = (yyvsp[0].node); }
-#line 1195 "myparser.tab.c"
+#line 1286 "myparser.tab.c"
     break;
 
   case 8: /* statement: read_statement  */
-#line 76 "myparser.y"
+#line 167 "myparser.y"
                      { (yyval.node) = (yyvsp[0].node); }
-#line 1201 "myparser.tab.c"
+#line 1292 "myparser.tab.c"
     break;
 
   case 9: /* statement: write_statement  */
-#line 77 "myparser.y"
+#line 168 "myparser.y"
                       { (yyval.node) = (yyvsp[0].node); }
-#line 1207 "myparser.tab.c"
+#line 1298 "myparser.tab.c"
     break;
 
   case 10: /* assign_statement: IDENTIFIER ASSIGN expression  */
-#line 80 "myparser.y"
+#line 171 "myparser.y"
                                  {
         (yyval.node) = createNode(NODE_ASSIGN);
         (yyval.node)->data.assign_statement.identifier = (yyvsp[-2].string);  // $1 is a string (IDENTIFIER)
         (yyval.node)->data.assign_statement.expression = (yyvsp[0].node);
     }
-#line 1217 "myparser.tab.c"
+#line 1308 "myparser.tab.c"
     break;
 
   case 11: /* if_statement: IF expression THEN statement_sequence END  */
-#line 87 "myparser.y"
+#line 178 "myparser.y"
                                               {
         (yyval.node) = createNode(NODE_IF);
         (yyval.node)->data.if_statement.expression = (yyvsp[-3].node);
         (yyval.node)->data.if_statement.statement_sequence1 = (yyvsp[-1].node);
         (yyval.node)->data.if_statement.statement_sequence2 = NULL;
     }
-#line 1228 "myparser.tab.c"
+#line 1319 "myparser.tab.c"
     break;
 
   case 12: /* if_statement: IF expression THEN statement_sequence ELSE statement_sequence END  */
-#line 93 "myparser.y"
+#line 184 "myparser.y"
                                                                         {
         (yyval.node) = createNode(NODE_IF);
         (yyval.node)->data.if_statement.expression = (yyvsp[-5].node);
         (yyval.node)->data.if_statement.statement_sequence1 = (yyvsp[-3].node);
         (yyval.node)->data.if_statement.statement_sequence2 = (yyvsp[-1].node);
     }
-#line 1239 "myparser.tab.c"
+#line 1330 "myparser.tab.c"
     break;
 
   case 13: /* repeat_statement: REPEAT statement_sequence UNTIL expression  */
-#line 101 "myparser.y"
+#line 192 "myparser.y"
                                                {
         (yyval.node) = createNode(NODE_REPEAT);
         (yyval.node)->data.repeat_statement.statement_sequence = (yyvsp[-2].node);
         (yyval.node)->data.repeat_statement.expression = (yyvsp[0].node);
     }
-#line 1249 "myparser.tab.c"
+#line 1340 "myparser.tab.c"
     break;
 
   case 14: /* read_statement: READ IDENTIFIER  */
-#line 108 "myparser.y"
+#line 199 "myparser.y"
                     {
         (yyval.node) = createNode(NODE_READ);
         (yyval.node)->data.read_statement.identifier = (yyvsp[0].string);  // $2 is a string (IDENTIFIER)
     }
-#line 1258 "myparser.tab.c"
+#line 1349 "myparser.tab.c"
     break;
 
   case 15: /* write_statement: WRITE IDENTIFIER  */
-#line 114 "myparser.y"
+#line 205 "myparser.y"
                      {
         (yyval.node) = createNode(NODE_WRITE);
         (yyval.node)->data.write_statement.identifier = (yyvsp[0].string);  // $2 is a string (IDENTIFIER)
     }
-#line 1267 "myparser.tab.c"
+#line 1358 "myparser.tab.c"
     break;
 
   case 16: /* factor: LEFT_PARENTHESIS expression RIGHT_PARENTHESIS  */
-#line 120 "myparser.y"
+#line 211 "myparser.y"
                                                   { (yyval.node) = (yyvsp[-1].node); }
-#line 1273 "myparser.tab.c"
+#line 1364 "myparser.tab.c"
     break;
 
   case 17: /* factor: NUMBER  */
-#line 121 "myparser.y"
+#line 212 "myparser.y"
              {
         (yyval.node) = createNode(NODE_FACTOR);
         (yyval.node)->data.factor.num = (yyvsp[0].num);  // $1 is a number (NUMBER)
     }
-#line 1282 "myparser.tab.c"
+#line 1373 "myparser.tab.c"
     break;
 
   case 18: /* factor: IDENTIFIER  */
-#line 125 "myparser.y"
+#line 216 "myparser.y"
                  {
         (yyval.node) = createNode(NODE_FACTOR);
         (yyval.node)->data.factor.identifier = (yyvsp[0].string);  // $1 is a string (IDENTIFIER)
-
-
     }
-#line 1293 "myparser.tab.c"
+#line 1382 "myparser.tab.c"
     break;
 
   case 19: /* term: factor  */
-#line 133 "myparser.y"
+#line 222 "myparser.y"
            { (yyval.node) = (yyvsp[0].node); }
-#line 1299 "myparser.tab.c"
+#line 1388 "myparser.tab.c"
     break;
 
   case 20: /* term: term MULTIPLY factor  */
-#line 134 "myparser.y"
+#line 223 "myparser.y"
                            {
         (yyval.node) = createNode(NODE_TERM);
         (yyval.node)->data.term.operation = '*';
         (yyval.node)->data.term.term = (yyvsp[-2].node);
         (yyval.node)->data.term.factor = (yyvsp[0].node);
     }
-#line 1310 "myparser.tab.c"
+#line 1399 "myparser.tab.c"
     break;
 
   case 21: /* term: term DIVIDE factor  */
-#line 140 "myparser.y"
+#line 229 "myparser.y"
                          {
         (yyval.node) = createNode(NODE_TERM);
         (yyval.node)->data.term.operation = '/';
         (yyval.node)->data.term.term = (yyvsp[-2].node);
         (yyval.node)->data.term.factor = (yyvsp[0].node);
     }
-#line 1321 "myparser.tab.c"
+#line 1410 "myparser.tab.c"
     break;
 
   case 22: /* simple_expression: term  */
-#line 148 "myparser.y"
+#line 237 "myparser.y"
          { (yyval.node) = (yyvsp[0].node); }
-#line 1327 "myparser.tab.c"
+#line 1416 "myparser.tab.c"
     break;
 
   case 23: /* simple_expression: simple_expression PLUS term  */
-#line 149 "myparser.y"
+#line 238 "myparser.y"
                                   {
         (yyval.node) = createNode(NODE_TERM);
         (yyval.node)->data.term.operation = '+';
         (yyval.node)->data.term.term = (yyvsp[-2].node);
         (yyval.node)->data.term.factor = (yyvsp[0].node);
     }
-#line 1338 "myparser.tab.c"
+#line 1427 "myparser.tab.c"
     break;
 
   case 24: /* simple_expression: simple_expression MINUS term  */
-#line 155 "myparser.y"
+#line 244 "myparser.y"
                                    {
         (yyval.node) = createNode(NODE_TERM);
         (yyval.node)->data.term.operation = '-';
         (yyval.node)->data.term.term = (yyvsp[-2].node);
         (yyval.node)->data.term.factor = (yyvsp[0].node);
     }
-#line 1349 "myparser.tab.c"
+#line 1438 "myparser.tab.c"
     break;
 
   case 25: /* relational_expression: simple_expression  */
-#line 163 "myparser.y"
+#line 252 "myparser.y"
                       { (yyval.node) = (yyvsp[0].node); }
-#line 1355 "myparser.tab.c"
+#line 1444 "myparser.tab.c"
     break;
 
   case 26: /* relational_expression: relational_expression LESS simple_expression  */
-#line 164 "myparser.y"
+#line 253 "myparser.y"
                                                    {
         (yyval.node) = createNode(NODE_RELATIONAL_OPERATION);
         (yyval.node)->data.relative_operation.operation = '<';
         (yyval.node)->data.relative_operation.simple_expression = (yyvsp[0].node);
     }
-#line 1365 "myparser.tab.c"
+#line 1454 "myparser.tab.c"
     break;
 
   case 27: /* relational_expression: relational_expression EQUALS simple_expression  */
-#line 169 "myparser.y"
+#line 258 "myparser.y"
                                                      {
         (yyval.node) = createNode(NODE_RELATIONAL_OPERATION);
         (yyval.node)->data.relative_operation.operation = '=';
         (yyval.node)->data.relative_operation.simple_expression = (yyvsp[0].node);
     }
-#line 1375 "myparser.tab.c"
+#line 1464 "myparser.tab.c"
     break;
 
   case 28: /* expression: relational_expression  */
-#line 176 "myparser.y"
+#line 265 "myparser.y"
                           { (yyval.node) = (yyvsp[0].node); }
-#line 1381 "myparser.tab.c"
+#line 1470 "myparser.tab.c"
     break;
 
 
-#line 1385 "myparser.tab.c"
+#line 1474 "myparser.tab.c"
 
       default: break;
     }
@@ -1574,7 +1663,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 178 "myparser.y"
+#line 267 "myparser.y"
 
 
 int main() {
