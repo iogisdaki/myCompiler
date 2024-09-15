@@ -39,7 +39,7 @@
 # define YY_YY_MYPARSER_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -54,16 +54,16 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    IF = 258,                      /* IF  */
-    THEN = 259,                    /* THEN  */
-    ELSE = 260,                    /* ELSE  */
-    END = 261,                     /* END  */
-    REPEAT = 262,                  /* REPEAT  */
-    UNTIL = 263,                   /* UNTIL  */
-    READ = 264,                    /* READ  */
-    WRITE = 265,                   /* WRITE  */
-    IDENTIFIER = 266,              /* IDENTIFIER  */
-    NUMBER = 267,                  /* NUMBER  */
+    IDENTIFIER = 258,              /* IDENTIFIER  */
+    NUMBER = 259,                  /* NUMBER  */
+    IF = 260,                      /* IF  */
+    THEN = 261,                    /* THEN  */
+    ELSE = 262,                    /* ELSE  */
+    END = 263,                     /* END  */
+    REPEAT = 264,                  /* REPEAT  */
+    UNTIL = 265,                   /* UNTIL  */
+    READ = 266,                    /* READ  */
+    WRITE = 267,                   /* WRITE  */
     MULTIPLY = 268,                /* MULTIPLY  */
     DIVIDE = 269,                  /* DIVIDE  */
     PLUS = 270,                    /* PLUS  */
@@ -83,12 +83,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 18 "myparser.y"
+#line 40 "myparser.y"
 
     int num;
     char* string;
+    struct ASTNode* node;
 
-#line 92 "myparser.tab.h"
+#line 93 "myparser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
