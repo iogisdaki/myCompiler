@@ -5,7 +5,7 @@
 typedef struct ASTNode {
     enum {
         NODE_PROGRAM, NODE_STATEMENT_SEQUENCE, NODE_STATEMENT, NODE_ASSIGN, NODE_IF,
-        NODE_REPEAT, NODE_READ, NODE_WRITE, NODE_FACTOR, NODE_TERM, NODE_RELATIONAL_OPERATION, NODE_EXPRESSION
+        NODE_REPEAT, NODE_READ, NODE_WRITE, NODE_FACTOR, NODE_TERM, NODE_SIMPLE_EXPRESSION, NODE_RELATIONAL_OPERATION, NODE_EXPRESSION
     } type;
 
     union {
@@ -23,6 +23,7 @@ typedef struct ASTNode {
     } data;
 } ASTNode;
 
+void ast(ASTNode *node, int indent);
 void AST_print(ASTNode *node, int indent);
 const char* getNodeTypeString(int type);
 

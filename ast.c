@@ -1,16 +1,28 @@
 #include <stdio.h>
 #include "ast.h"
 
+FILE *file;
+
+void ast(ASTNode *node, int indent){
+    file = fopen("astTree.txt", "w");
+
+    if (file == NULL) {
+        fprintf(stderr, "Error opening file\n");
+        return;
+    }
+    AST_print(node, indent);
+    fclose(file);
+}
+
 /* recursivelly print ast*/
 void AST_print(ASTNode *node, int indent) {
     if (node == NULL) return;
 
     for (int i = 0; i < indent; i++) {
-        printf("  ");  // Indentation for better readability
+        fprintf(file, "  ");  // indentation for the tree
     }
-    printf("%s\n", getNodeTypeString(node->type));
+    fprintf(file, "%s\n", getNodeTypeString(node->type));
 
-    /* Recursively print children based on the node type */
     switch (node->type) {
         case NODE_PROGRAM:
             AST_print(node->data.program.statement_sequence, indent + 1);
@@ -20,8 +32,8 @@ void AST_print(ASTNode *node, int indent) {
             AST_print(node->data.statement_sequence.statement, indent + 1);
             break;
         case NODE_ASSIGN:
-            for (int i = 0; i < indent + 1; i++) printf("  ");
-            printf("Identifier: %s\n", node->data.assign_statement.identifier);
+            for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
+            fprintf(file, "Identifier: %s\n", node->data.assign_statement.identifier);
             AST_print(node->data.assign_statement.expression, indent + 1);
             break;
         case NODE_IF:
@@ -35,39 +47,39 @@ void AST_print(ASTNode *node, int indent) {
             AST_print(node->data.repeat_statement.expression, indent + 1);
             break;
         case NODE_READ:
-            for (int i = 0; i < indent + 1; i++) printf("  ");
-            printf("Identifier: %s\n", node->data.read_statement.identifier);
+            for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
+            fprintf(file, "Identifier: %s\n", node->data.read_statement.identifier);
             break;
         case NODE_WRITE:
-            for (int i = 0; i < indent + 1; i++) printf("  ");
-            printf("Identifier: %s\n", node->data.write_statement.identifier);
+            for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
+            fprintf(file, "Identifier: %s\n", node->data.write_statement.identifier);
             break;
         case NODE_FACTOR:
             if (node->data.factor.identifier) {
-                for (int i = 0; i < indent + 1; i++) printf("  ");
-                printf("Identifier: %s\n", node->data.factor.identifier);
+                for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
+                fprintf(file, "Identifier: %s\n", node->data.factor.identifier);
             } else {
-                for (int i = 0; i < indent + 1; i++) printf("  ");
-                printf("Number: %d\n", node->data.factor.num);
+                for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
+                fprintf(file, "Number: %d\n", node->data.factor.num);
             }
             break;
         case NODE_TERM:
             AST_print(node->data.term.term, indent + 1);
-            for (int i = 0; i < indent + 1; i++) printf("  ");
-            printf("Operation: %c\n", node->data.term.operation);
+            for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
+            fprintf(file, "Operation: %c\n", node->data.term.operation);
             AST_print(node->data.term.factor, indent + 1);
             break;
         case NODE_RELATIONAL_OPERATION:
             AST_print(node->data.relative_operation.term, indent + 1);
-            for (int i = 0; i < indent + 1; i++) printf("  ");
-            printf("Operation: %c\n", node->data.relative_operation.operation);
+            for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
+            fprintf(file, "Operation: %c\n", node->data.relative_operation.operation);
             AST_print(node->data.relative_operation.simple_expression, indent + 1);
             break;
         case NODE_EXPRESSION:
             AST_print(node->data.expression.relational_expression, indent + 1);
             break;
         default:
-            printf("Unknown node type\n");
+            fprintf(stderr, "Error: Unknown node type %d\n", node->type);
             break;
     }
 }

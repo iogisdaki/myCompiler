@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ast.h"
+#include "mixal.h"
 
 void yyerror(const char *s) {
     fprintf(stderr, "Error: %s\n", s);
@@ -40,7 +41,8 @@ program:
     statement_sequence {
         $$ = createNode(NODE_PROGRAM);
         $$->data.program.statement_sequence = $1;
-        AST_print($$, 0); 
+        ast($$, 0); 
+        generateMIXAL($$);
     };
 
 statement_sequence:
