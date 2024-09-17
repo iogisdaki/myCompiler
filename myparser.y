@@ -1,4 +1,5 @@
-//TODO more detailed error messages
+// TODO more detailed error messages
+// doesnt accept negative numbers
 
 %{
 #include <stdio.h>
@@ -18,14 +19,12 @@ ASTNode *createNode(int type) {
 }
 %}
 
-/* Bison union for token values */
 %union {
     int num;
     char* string;
     struct ASTNode* node;
 }
 
-/* Token declarations */
 %token <string> IDENTIFIER
 %token <num> NUMBER
 %token IF THEN ELSE END REPEAT UNTIL READ WRITE MULTIPLY DIVIDE PLUS MINUS ASSIGN LEFT_PARENTHESIS RIGHT_PARENTHESIS SEMICOLON LESS EQUALS UNKNOWN
@@ -35,13 +34,11 @@ ASTNode *createNode(int type) {
 
 %%
 
-/* Grammar rules */
-
 program:
     statement_sequence {
         $$ = createNode(NODE_PROGRAM);
         $$->data.program.statement_sequence = $1;
-        ast($$, 0); 
+        astPrint($$, 0); 
         generateMixal($$);
     };
 

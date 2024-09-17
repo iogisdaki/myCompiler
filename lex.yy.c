@@ -805,7 +805,7 @@ case 9:
 YY_RULE_SETUP
 #line 20 "mylexer.l"
 {
-    yylval.string = strdup(yytext); // Store the identifier text
+    yylval.string = strdup(yytext); // store the identifier
     return IDENTIFIER;
 }
 	YY_BREAK
@@ -813,7 +813,7 @@ case 10:
 YY_RULE_SETUP
 #line 24 "mylexer.l"
 {
-    yylval.num = atoi(yytext); // Convert number text to integer
+    yylval.num = atoi(yytext); // store the number
     return NUMBER;
 }
 	YY_BREAK

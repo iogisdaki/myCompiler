@@ -3,7 +3,7 @@
 
 FILE *file;
 
-void ast(ASTNode *node, int indent){
+void astPrint(ASTNode *node, int indent){
     file = fopen("astTree.txt", "w");
 
     if (file == NULL) {

@@ -23,7 +23,7 @@ typedef struct ASTNode {
     } data;
 } ASTNode;
 
-void ast(ASTNode *node, int indent);
+void astPrint(ASTNode *node, int indent);
 void AST_print(ASTNode *node, int indent);
 const char* getNodeTypeString(int type);
 

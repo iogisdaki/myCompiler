@@ -17,11 +17,11 @@ extern int yywrap(void) {}
 
   /* identifiers and numbers*/
 [a-zA-Z_][a-zA-Z0-9_]*  {
-    yylval.string = strdup(yytext); // Store the identifier text
+    yylval.string = strdup(yytext); // store the identifier
     return IDENTIFIER;
 }
 [0-9]+      {
-    yylval.num = atoi(yytext); // Convert number text to integer
+    yylval.num = atoi(yytext); // store the number
     return NUMBER;
 }
 

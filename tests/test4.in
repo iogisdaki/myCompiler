@@ -1,0 +1,4 @@
+if x < 5 then 
+    a := 4;
+    mjd2 := 2
+end
