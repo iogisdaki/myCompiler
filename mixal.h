@@ -3,6 +3,7 @@
 
 #include "ast.h"
 
-void generateMIXAL(ASTNode *node);
+void generateMixal(ASTNode *node);
+void genMixal(ASTNode *node);
 
 #endif

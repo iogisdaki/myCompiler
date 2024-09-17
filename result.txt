@@ -1,0 +1,26 @@
+IN x,1
+LDA =0
+LDA x
+CMP
+JL 
+JZ L1
+LDA =1
+STA fact
+L3:
+LDA fact
+LDA x
+MUL
+STA fact
+LDA x
+STA x
+LDA x
+LDA =0
+CMP
+JE 
+JZ L3
+L4:
+OUT fact,3
+JMP L2
+L1:
+L2:
+HLT

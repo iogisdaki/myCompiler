@@ -42,7 +42,7 @@ program:
         $$ = createNode(NODE_PROGRAM);
         $$->data.program.statement_sequence = $1;
         ast($$, 0); 
-        generateMIXAL($$);
+        generateMixal($$);
     };
 
 statement_sequence:

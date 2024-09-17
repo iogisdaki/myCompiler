@@ -1137,7 +1137,7 @@ yyreduce:
         (yyval.node) = createNode(NODE_PROGRAM);
         (yyval.node)->data.program.statement_sequence = (yyvsp[0].node);
         ast((yyval.node), 0); 
-        generateMIXAL((yyval.node));
+        generateMixal((yyval.node));
     }
 #line 1143 "myparser.tab.c"
     break;
