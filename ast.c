@@ -55,10 +55,11 @@ void AST_print(ASTNode *node, int indent) {
             fprintf(file, "Identifier: %s\n", node->data.write_statement.identifier);
             break;
         case NODE_FACTOR:
+            AST_print(node->data.factor.expression, indent + 1);
             if (node->data.factor.identifier) {
                 for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
                 fprintf(file, "Identifier: %s\n", node->data.factor.identifier);
-            } else {
+            } else if(node->data.factor.num){
                 for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
                 fprintf(file, "Number: %d\n", node->data.factor.num);
             }
@@ -69,11 +70,17 @@ void AST_print(ASTNode *node, int indent) {
             fprintf(file, "Operation: %c\n", node->data.term.operation);
             AST_print(node->data.term.factor, indent + 1);
             break;
-        case NODE_RELATIONAL_OPERATION:
-            AST_print(node->data.relative_operation.term, indent + 1);
+        case NODE_SIMPLE_EXPRESSION:
+            AST_print(node->data.simple_expression.simple_expression, indent + 1);
             for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
-            fprintf(file, "Operation: %c\n", node->data.relative_operation.operation);
-            AST_print(node->data.relative_operation.simple_expression, indent + 1);
+            fprintf(file, "Operation: %c\n", node->data.simple_expression.operation);
+            AST_print(node->data.simple_expression.term, indent + 1);
+            break;
+        case NODE_RELATIONAL_EXPRESSION:
+            AST_print(node->data.relational_expression.relational_expression, indent + 1);
+            for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
+            fprintf(file, "Operation: %c\n", node->data.relational_expression.operation);
+            AST_print(node->data.relational_expression.simple_expression, indent + 1);
             break;
         case NODE_EXPRESSION:
             AST_print(node->data.expression.relational_expression, indent + 1);
@@ -88,7 +95,6 @@ const char* getNodeTypeString(int type) {
     switch(type) {
         case NODE_PROGRAM: return "Program";
         case NODE_STATEMENT_SEQUENCE: return "Statement Sequence";
-        case NODE_STATEMENT: return "Statement";
         case NODE_ASSIGN: return "Assign Statement";
         case NODE_IF: return "If Statement";
         case NODE_REPEAT: return "Repeat Statement";
@@ -96,7 +102,8 @@ const char* getNodeTypeString(int type) {
         case NODE_WRITE: return "Write Statement";
         case NODE_FACTOR: return "Factor";
         case NODE_TERM: return "Term";
-        case NODE_RELATIONAL_OPERATION: return "Relational Operation";
+        case NODE_SIMPLE_EXPRESSION: return "Simple Expression";
+        case NODE_RELATIONAL_EXPRESSION: return "Relational Expression";
         case NODE_EXPRESSION: return "Expression";
         default: return "Unknown";
     }

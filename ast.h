@@ -5,7 +5,7 @@
 typedef struct ASTNode {
     enum {
         NODE_PROGRAM, NODE_STATEMENT_SEQUENCE, NODE_STATEMENT, NODE_ASSIGN, NODE_IF,
-        NODE_REPEAT, NODE_READ, NODE_WRITE, NODE_FACTOR, NODE_TERM, NODE_SIMPLE_EXPRESSION, NODE_RELATIONAL_OPERATION, NODE_EXPRESSION
+        NODE_REPEAT, NODE_READ, NODE_WRITE, NODE_FACTOR, NODE_TERM, NODE_SIMPLE_EXPRESSION, NODE_RELATIONAL_EXPRESSION, NODE_EXPRESSION
     } type;
 
     union {
@@ -17,8 +17,9 @@ typedef struct ASTNode {
         struct { char *identifier; } read_statement;
         struct { char *identifier; } write_statement;
         struct { struct ASTNode *relational_expression; } expression;
-        struct { struct ASTNode *simple_expression; int operation; struct ASTNode *term; } relative_operation;
-        struct { struct ASTNode *factor; int operation; struct ASTNode *term; } term;
+        struct { struct ASTNode *relational_expression; int operation; struct ASTNode *simple_expression; } relational_expression;
+        struct { struct ASTNode *simple_expression; int operation; struct ASTNode *term; } simple_expression;
+        struct { struct ASTNode *term; int operation; struct ASTNode *factor; } term;
         struct { struct ASTNode *expression; char *identifier; int num; } factor;
     } data;
 } ASTNode;

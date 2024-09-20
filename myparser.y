@@ -126,33 +126,32 @@ term:
 simple_expression:
     term { $$ = $1; }
     | simple_expression PLUS term {
-        $$ = createNode(NODE_TERM);
-        $$->data.term.operation = '+';
-        $$->data.term.term = $1;
-        $$->data.term.factor = $3;
+        $$ = createNode(NODE_SIMPLE_EXPRESSION);
+        $$->data.simple_expression.simple_expression = $1;
+        $$->data.simple_expression.operation = '+';
+        $$->data.simple_expression.term = $3;
     }
     | simple_expression MINUS term {
-        $$ = createNode(NODE_TERM);
-        $$->data.term.operation = '-';
-        $$->data.term.term = $1;
-        $$->data.term.factor = $3;
+        $$ = createNode(NODE_SIMPLE_EXPRESSION);
+        $$->data.simple_expression.simple_expression = $1;
+        $$->data.simple_expression.operation = '-';
+        $$->data.simple_expression.term = $3;
     };
 
 relational_expression:
     simple_expression { $$ = $1; }
     | relational_expression LESS simple_expression {
-        $$ = createNode(NODE_RELATIONAL_OPERATION);
-        $$->data.relative_operation.term = $1;  
-        $$->data.relative_operation.operation = '<';
-        $$->data.relative_operation.simple_expression = $3; 
+        $$ = createNode(NODE_RELATIONAL_EXPRESSION);
+        $$->data.relational_expression.relational_expression = $1;  
+        $$->data.relational_expression.operation = '<';
+        $$->data.relational_expression.simple_expression = $3; 
     }
     | relational_expression EQUALS simple_expression {
-        $$ = createNode(NODE_RELATIONAL_OPERATION);
-        $$->data.relative_operation.term = $1;  
-        $$->data.relative_operation.operation = '=';
-        $$->data.relative_operation.simple_expression = $3; 
+        $$ = createNode(NODE_RELATIONAL_EXPRESSION);
+        $$->data.relational_expression.relational_expression = $1;  
+        $$->data.relational_expression.operation = '=';
+        $$->data.relational_expression.simple_expression = $3; 
     };
-
 
 expression:
     relational_expression { $$ = $1; };

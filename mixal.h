@@ -5,10 +5,9 @@
 
 void generateMixal(ASTNode *node);
 void genMixal(ASTNode *node);
-void generateMixalStatement(ASTNode *node);
-void generateMixalExpression(ASTNode *node);
-void generateMixalTerm(ASTNode *node);
-void generateMixalFactor(ASTNode *node);
+void generateExpression(ASTNode *node);
+void generateTerm(ASTNode *node);
+void generateFactor(ASTNode *node);
 
 
 #endif
