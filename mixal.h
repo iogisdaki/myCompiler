@@ -1,13 +1,15 @@
 #ifndef MIXAL_H
 #define MIXAL_H
 
-#include "ast.h"
+#include "parseTree.h"
 
-void generateMixal(ASTNode *node);
-void genMixal(ASTNode *node);
-void generateExpression(ASTNode *node);
-void generateTerm(ASTNode *node);
-void generateFactor(ASTNode *node);
+void generateMixal(Node *node);
+void genMixal(Node *node);
+void generateExpression(Node *node);
+void generateFactor(Node *node);
+void generateTerm(Node *node);
+void generateSimpleExpression(Node *node);
+void generateRelationalExpression(Node *node);
 
 
 #endif

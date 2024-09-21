@@ -1,0 +1,9 @@
+Program
+  Assign Statement
+    Identifier: b21
+    Term
+      Factor
+        Number: 5
+      Operation: *
+      Factor
+        Number: 8

@@ -1,28 +1,28 @@
 // TODO more detailed error messages
-// doesnt accept negative numbers
 
 %{
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ast.h"
+#include "parseTree.h"
 #include "mixal.h"
 
 void yyerror(const char *s) {
     fprintf(stderr, "Error: %s\n", s);
 }
 
-ASTNode *createNode(int type) {
-    ASTNode *node = (ASTNode *)malloc(sizeof(ASTNode));
+Node *createNode(int type) {
+    Node *node = (Node *)malloc(sizeof(Node));
     node->type = type;
     return node;
 }
 %}
 
+
 %union {
     int num;
     char* string;
-    struct ASTNode* node;
+    struct Node* node;
 }
 
 %token <string> IDENTIFIER
@@ -38,7 +38,7 @@ program:
     statement_sequence {
         $$ = createNode(NODE_PROGRAM);
         $$->data.program.statement_sequence = $1;
-        astPrint($$, 0); 
+        parseTreePrint($$, 0); 
         generateMixal($$);
     };
 

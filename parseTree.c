@@ -1,21 +1,21 @@
 #include <stdio.h>
-#include "ast.h"
+#include "parseTree.h"
 
 FILE *file;
 
-void astPrint(ASTNode *node, int indent){
-    file = fopen("astTree.txt", "w");
+void parseTreePrint(Node *node, int indent){
+    file = fopen("tree.txt", "w");
 
     if (file == NULL) {
         fprintf(stderr, "Error opening file\n");
         return;
     }
-    AST_print(node, indent);
+    treePrint(node, indent);
     fclose(file);
 }
 
-/* recursivelly print ast*/
-void AST_print(ASTNode *node, int indent) {
+/* recursivelly print parse tree*/
+void treePrint(Node *node, int indent) {
     if (node == NULL) return;
 
     for (int i = 0; i < indent; i++) {
@@ -25,26 +25,26 @@ void AST_print(ASTNode *node, int indent) {
 
     switch (node->type) {
         case NODE_PROGRAM:
-            AST_print(node->data.program.statement_sequence, indent + 1);
+            treePrint(node->data.program.statement_sequence, indent + 1);
             break;
         case NODE_STATEMENT_SEQUENCE:
-            AST_print(node->data.statement_sequence.statement_sequence, indent + 1);
-            AST_print(node->data.statement_sequence.statement, indent + 1);
+            treePrint(node->data.statement_sequence.statement_sequence, indent + 1);
+            treePrint(node->data.statement_sequence.statement, indent + 1);
             break;
         case NODE_ASSIGN:
             for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
             fprintf(file, "Identifier: %s\n", node->data.assign_statement.identifier);
-            AST_print(node->data.assign_statement.expression, indent + 1);
+            treePrint(node->data.assign_statement.expression, indent + 1);
             break;
         case NODE_IF:
-            AST_print(node->data.if_statement.expression, indent + 1);
-            AST_print(node->data.if_statement.statement_sequence1, indent + 1);
+            treePrint(node->data.if_statement.expression, indent + 1);
+            treePrint(node->data.if_statement.statement_sequence1, indent + 1);
             if (node->data.if_statement.statement_sequence2 != NULL)
-                AST_print(node->data.if_statement.statement_sequence2, indent + 1);
+                treePrint(node->data.if_statement.statement_sequence2, indent + 1);
             break;
         case NODE_REPEAT:
-            AST_print(node->data.repeat_statement.statement_sequence, indent + 1);
-            AST_print(node->data.repeat_statement.expression, indent + 1);
+            treePrint(node->data.repeat_statement.statement_sequence, indent + 1);
+            treePrint(node->data.repeat_statement.expression, indent + 1);
             break;
         case NODE_READ:
             for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
@@ -55,7 +55,7 @@ void AST_print(ASTNode *node, int indent) {
             fprintf(file, "Identifier: %s\n", node->data.write_statement.identifier);
             break;
         case NODE_FACTOR:
-            AST_print(node->data.factor.expression, indent + 1);
+            treePrint(node->data.factor.expression, indent + 1);
             if (node->data.factor.identifier) {
                 for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
                 fprintf(file, "Identifier: %s\n", node->data.factor.identifier);
@@ -65,25 +65,25 @@ void AST_print(ASTNode *node, int indent) {
             }
             break;
         case NODE_TERM:
-            AST_print(node->data.term.term, indent + 1);
+            treePrint(node->data.term.term, indent + 1);
             for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
             fprintf(file, "Operation: %c\n", node->data.term.operation);
-            AST_print(node->data.term.factor, indent + 1);
+            treePrint(node->data.term.factor, indent + 1);
             break;
         case NODE_SIMPLE_EXPRESSION:
-            AST_print(node->data.simple_expression.simple_expression, indent + 1);
+            treePrint(node->data.simple_expression.simple_expression, indent + 1);
             for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
             fprintf(file, "Operation: %c\n", node->data.simple_expression.operation);
-            AST_print(node->data.simple_expression.term, indent + 1);
+            treePrint(node->data.simple_expression.term, indent + 1);
             break;
         case NODE_RELATIONAL_EXPRESSION:
-            AST_print(node->data.relational_expression.relational_expression, indent + 1);
+            treePrint(node->data.relational_expression.relational_expression, indent + 1);
             for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
             fprintf(file, "Operation: %c\n", node->data.relational_expression.operation);
-            AST_print(node->data.relational_expression.simple_expression, indent + 1);
+            treePrint(node->data.relational_expression.simple_expression, indent + 1);
             break;
         case NODE_EXPRESSION:
-            AST_print(node->data.expression.relational_expression, indent + 1);
+            treePrint(node->data.expression.relational_expression, indent + 1);
             break;
         default:
             fprintf(stderr, "Error: Unknown node type %d\n", node->type);
