@@ -17,7 +17,6 @@ void generateMixal(Node *node){
 }
 
 void genMixal(Node *node) {
-    printf("IN");
     if (node == NULL) return;
     switch (node->type) {
         case NODE_PROGRAM:
@@ -28,7 +27,6 @@ void genMixal(Node *node) {
             genMixal(node->data.statement_sequence.statement);
             break;
         case NODE_ASSIGN:
-            printf("in");
             generateExpression(node->data.assign_statement.expression);
             printf("\tSTA %s\n", node->data.assign_statement.identifier);  // store the result from accumulator to the identifier
             break;
@@ -70,14 +68,12 @@ void genMixal(Node *node) {
 
 
     void generateExpression(Node *node){
-        printf("in");
         if (node == NULL) return;
         switch (node->type) {
             case NODE_FACTOR:
                 generateFactor(node);
                 break;
             case NODE_TERM:
-                printf("in");
                 generateTerm(node);
                 break;
             case NODE_SIMPLE_EXPRESSION:
@@ -100,31 +96,32 @@ void genMixal(Node *node) {
     }
 
     void generateTerm(Node *node){
-        printf("in");
         if (node == NULL) return;
-        printf("in");
-        generateTerm(node->data.term.term);
-        // if (node->data.term.operation == '*') 
-        //     printf("\tMUL ");
-        // else if (node->data.term.operation == '/') 
-        //     printf("\tDIV ");
-        generateFactor(node->data.term.factor);
+        generateExpression(node->data.term.term);
+        if (node->data.term.operation == '*') 
+            printf("\tMUL ");
+        else if (node->data.term.operation == '/') 
+            printf("\tDIV ");
+        generateExpression(node->data.term.factor);
     }
 
     void generateSimpleExpression(Node *node){
         if (node == NULL) return;
-        generateSimpleExpression(node->data.simple_expression.simple_expression);
+        generateExpression(node->data.simple_expression.simple_expression);
+        printf("\tSTA TEMP1\n");
+        generateExpression(node->data.simple_expression.term);
+        printf("\tLDA TEMP1\n");
         if (node->data.simple_expression.operation == '+') 
             printf("\tADD ");
         else if (node->data.simple_expression.operation == '-') 
             printf("\tSUB ");
-        generateTerm(node->data.simple_expression.term);
+        printf("TEMP2\n");
     }
 
     void generateRelationalExpression(Node *node){
         if (node == NULL) return;
-        generateRelationalExpression(node->data.relational_expression.relational_expression);
+        generateExpression(node->data.relational_expression.relational_expression);
         if (node->data.relational_expression.operation == '<' || node->data.relational_expression.operation == '=') 
             printf("\tCMPA ");
-        generateSimpleExpression(node->data.relational_expression.simple_expression);
+        generateExpression(node->data.relational_expression.simple_expression);
     }

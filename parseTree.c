@@ -62,6 +62,7 @@ void treePrint(Node *node, int indent) {
             } else if(node->data.factor.num){
                 for (int i = 0; i < indent + 1; i++) fprintf(file, "  ");
                 fprintf(file, "Number: %d\n", node->data.factor.num);
+                printf("%d", node->data.factor.num);
             }
             break;
         case NODE_TERM:
