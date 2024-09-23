@@ -1,5 +1,3 @@
-if x < 5 then 
-    a := 4
-else
-    b := 32 - i
-end
+d := 3 < 5
+
+

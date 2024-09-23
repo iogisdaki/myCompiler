@@ -1,17 +1,5 @@
 Program
   Assign Statement
-    Identifier: b21
-    Term
-      Term
-        Term
-          Factor
-            Number: 5
-          Operation: *
-          Factor
-            Number: 8
-        Operation: *
-        Factor
-          Number: 9
-      Operation: *
-      Factor
-        Number: 7
+    Identifier: a
+    Factor
+      Number: 1

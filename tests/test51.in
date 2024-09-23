@@ -1,7 +1,0 @@
-if x < 5 then 
-    a := 4;
-    mjd2 := 2
-else
-    uj := 32 - i;
-    c := uj < 8
-end

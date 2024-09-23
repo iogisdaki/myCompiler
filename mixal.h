@@ -10,6 +10,6 @@ void generateFactor(Node *node);
 void generateTerm(Node *node);
 void generateSimpleExpression(Node *node);
 void generateRelationalExpression(Node *node);
-
+const char* getNewTempVar();
 
 #endif

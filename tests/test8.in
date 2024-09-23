@@ -1,9 +1,4 @@
-read x;
-if 0 < x then
-    fact := 1;
-    repeat
-        fact := fact * x;
-        x := x - 1
-    until x = 0;
-write fact
+if x + 8 / 7 < a - 5 then 
+    a := 4;
+    mjd2 := 2
 end
