@@ -1,5 +1,20 @@
 Program
-  Assign Statement
-    Identifier: a
-    Factor
-      Number: 1
+  If Statement
+    Relational Expression
+      Factor
+        Identifier: x
+      Operation: =
+      Factor
+        Number: 5
+    Assign Statement
+      Identifier: a
+      Factor
+        Number: 4
+    Assign Statement
+      Identifier: b
+      Simple Expression
+        Factor
+          Number: 32
+        Operation: -
+        Factor
+          Identifier: i

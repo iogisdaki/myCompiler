@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #include "mixal.h"
 
 FILE *file1;
@@ -19,9 +20,9 @@ void generateMixal(Node *node){
         fprintf(stderr, "Error opening file\n");
         return;
     }
-    fprintf(file1, "ORIG 1000\nSTART\n"); // start the memory location at 1000
+    fprintf(file1, "START"); // start the memory location at 1000
     genMixal(node);
-    fprintf(file1, "END  START");
+    fprintf(file1, "\tEND  START");
     fclose(file1);
 }
 
@@ -80,18 +81,18 @@ void genMixal(Node *node) {
             if (node->data.if_statement.statement_sequence2 != NULL) { // if it has else
                 fprintf(file1, "\tJE ELSE\n");  // jump to else if 0
                 genMixal(node->data.if_statement.statement_sequence1); // if true do the statement sequence of the if block
-                fprintf(file1, "\tJMP END_IF\n");  // and skip else block
-                fprintf(file1, "ELSE\n"); // do the else block code
+                fprintf(file1, "\tJMP ENDIF\n");  // and skip else block
+                fprintf(file1, "ELSE"); // do the else block code
                 genMixal(node->data.if_statement.statement_sequence2);
-                fprintf(file1, "END_IF\n");
+                fprintf(file1, "ENDIF NOP\n");
             } else{
-                fprintf(file1, "\tJE END_IF\n");  // jump to end if 0
+                fprintf(file1, "\tJE ENDIF\n");  // jump to end if 0
                 genMixal(node->data.if_statement.statement_sequence1); // if true do the statement sequence of the if block
-                fprintf(file1, "END_IF\n");
+                fprintf(file1, "ENDIF NOP\n");
             }
             break;
         case NODE_REPEAT:
-            fprintf(file1, "REPEAT\n");
+            fprintf(file1, "REPEAT");
             genMixal(node->data.repeat_statement.statement_sequence);
             genMixal(node->data.repeat_statement.expression);
             fprintf(file1, "\tCMPA 0\n");  // compare result to 0(false)
@@ -119,14 +120,14 @@ void genMixal(Node *node) {
                 fprintf(file1, "\tLDA  =0=\n"); 
                 fprintf(file1, "\tJMP DONE\n");
                 fprintf(file1, "TRUE LDA  =1=\n");
-                fprintf(file1, "DONE\n");
+                fprintf(file1, "DONE NOP\n");
             }else if (node->data.relational_expression.operation == '='){
                 fprintf(file1, "\tCMPA %s\n", rightTempVar);  // compare accumulator with the right-hand result
                 fprintf(file1, "\tJE TRUE\n");  // if its equal jump to true
                 fprintf(file1, "\tLDA  =0=\n"); 
                 fprintf(file1, "\tJMP DONE\n");
                 fprintf(file1, "TRUE LDA  =1=\n");
-                fprintf(file1, "DONE\n");
+                fprintf(file1, "DONE NOP\n");
             }
             break;
         default:

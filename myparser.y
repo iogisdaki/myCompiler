@@ -7,8 +7,11 @@
 #include "parseTree.h"
 #include "mixal.h"
 
+extern int yylineno; // line number
+extern char* yytext; // current token
+
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
+    fprintf(stderr, "Error at line %d: %s at '%s'\n", yylineno, s, yytext);
 }
 
 Node *createNode(int type) {
