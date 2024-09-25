@@ -6,6 +6,7 @@
 #include <string.h>
 #include "parseTree.h"
 #include "mixal.h"
+#include "symbolTable.h"
 
 extern int yylineno; // line number
 extern char* yytext; // current token
@@ -43,6 +44,7 @@ program:
         $$->data.program.statement_sequence = $1;
         parseTreePrint($$, 0); 
         generateMixal($$);
+        printSymbolTable();
     };
 
 statement_sequence:
@@ -65,6 +67,7 @@ assign_statement:
         $$ = createNode(NODE_ASSIGN);
         $$->data.assign_statement.identifier = $1;  
         $$->data.assign_statement.expression = $3;
+        insertSymbol($1);  // insert into the symbol table
     };
 
 if_statement:

@@ -10,7 +10,14 @@ int tempVarCounter = 0;  // counter for generating unique temporary variables
 const char* getNewTempVar() {
     static char buffer[10];
     snprintf(buffer, sizeof(buffer), "T%d", tempVarCounter++);
-    return strdup(buffer);  // Return a new unique temp variable name
+    char *name = buffer;
+    insertSymbol(buffer);
+    return strdup(buffer);  // return a new unique temp variable name
+}
+
+void generateVariables(){
+    for (int i = 0; i < table.size; i++) 
+        fprintf(file1, "%s CON 0\n", table.symbols[i].name); 
 }
 
 void generateMixal(Node *node){
@@ -20,9 +27,10 @@ void generateMixal(Node *node){
         fprintf(stderr, "Error opening file\n");
         return;
     }
-    fprintf(file1, "START"); // start the memory location at 1000
+    fprintf(file1, "\tORIG 1000\nSTART"); // start the memory location at 1000
     genMixal(node);
-    fprintf(file1, "\tEND  START");
+    generateVariables();
+    fprintf(file1, "\tEND  START\n"); // newline at the end omg it doenst run without a newline at the end!!!!
     fclose(file1);
 }
 
