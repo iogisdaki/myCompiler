@@ -27,6 +27,6 @@ void printSymbolTable() {
         return;
     }
     for (int i = 0; i < table.size; i++) 
-            fprintf(file2, "%s", table.symbols[i].name);   
+            fprintf(file2, "%s\n", table.symbols[i].name);   
     fclose(file2);
 }

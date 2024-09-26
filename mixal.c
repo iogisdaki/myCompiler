@@ -1,3 +1,5 @@
+// TODO mistake when input output
+
 #include <stdio.h>
 #include <ctype.h>
 #include "mixal.h"
@@ -57,12 +59,18 @@ void genMixal(Node *node) {
                 const char *tempVar = getNewTempVar();
                 fprintf(file1, "\tSTA %s\n", tempVar);  // save the result of right hand
                 genMixal(node->data.term.term);  // evaluate the left hand
-                fprintf(file1, "\tMUL %s\n", tempVar);  // multiply the current result he saved right hand
+                fprintf(file1, "\tMUL %s\n", tempVar);  // multiply the current result by the saved right hand
+                fprintf(file1, "\tSTX %s\n", tempVar); // the result of mul is stored in x so store it and load it back to a
+                fprintf(file1, "\tLDA %s\n", tempVar); // and load it back to a
             } else if (node->data.term.operation == '/') {
                 const char *tempVar = getNewTempVar();
-                fprintf(file1, "\tSTA %s\n", tempVar);  // save the result of left hand
+                fprintf(file1, "\tSTA %s\n", tempVar);  // save the result of left hand 
                 genMixal(node->data.term.term);  // evaluate the left hand
-                fprintf(file1, "\tDIV %s\n", tempVar);  // divide the current result by the saved right hand  
+                const char *tempVar1 = getNewTempVar(); // save the result from the accumulator
+                fprintf(file1, "\tSTA %s\n", tempVar1);  // store it 
+                fprintf(file1, "\tLDX %s\n", tempVar1); // and load it to x so that division can be done
+                fprintf(file1, "\tLDA =0=\n"); // make a register 0
+                fprintf(file1, "\tDIV %s\n", tempVar);  // divide the current result by the saved right hand
             }
             break;
         case NODE_FACTOR:

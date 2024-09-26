@@ -1,5 +1,3 @@
-// TODO more detailed error messages
-
 %{
 #include <stdio.h>
 #include <stdlib.h>
