@@ -1,0 +1,4 @@
+a := 9;
+if x < 0 then 
+    a := 2
+end

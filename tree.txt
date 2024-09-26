@@ -1,9 +1,16 @@
 Program
-  Assign Statement
-    Identifier: b21
-    Term
+  Statement Sequence
+    Assign Statement
+      Identifier: a
       Factor
         Number: 9
-      Operation: /
-      Factor
-        Number: 3
+    If Statement
+      Relational Expression
+        Factor
+          Identifier: x
+        Operation: <
+        Factor
+      Assign Statement
+        Identifier: a
+        Factor
+          Number: 2

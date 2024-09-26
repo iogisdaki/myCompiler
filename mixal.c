@@ -1,4 +1,4 @@
-// TODO mistake when input output
+// TODO: mistake when input output
 
 #include <stdio.h>
 #include <ctype.h>
@@ -75,6 +75,8 @@ void genMixal(Node *node) {
             break;
         case NODE_FACTOR:
             if (node->data.factor.identifier) {
+                if(lookupSymbol(node->data.factor.identifier) == 0)
+                    exit(0);
                 fprintf(file1, "\tLDA %s\n", node->data.factor.identifier);  
             } else {
                 fprintf(file1, "\tLDA =%d=\n", node->data.factor.num);  

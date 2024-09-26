@@ -1,4 +1,5 @@
-if x + 8 / 7 < a - 5 then 
+a := 1;
+if a + 1 < 6 then 
     a := 4;
     mjd2 := 2
 end

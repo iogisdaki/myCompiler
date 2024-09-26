@@ -93,6 +93,7 @@ read_statement:
     READ IDENTIFIER {
         $$ = createNode(NODE_READ);
         $$->data.read_statement.identifier = $2;  
+        insertSymbol($2); // a variable can also be defined by reading it
     };
 
 write_statement:
