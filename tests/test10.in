@@ -1,2 +1,2 @@
-read x;
+x := 3;
 write x

@@ -1,16 +1,40 @@
 Program
   Statement Sequence
     Assign Statement
-      Identifier: a
+      Identifier: x
       Factor
-        Number: 9
+        Number: 3
     If Statement
       Relational Expression
         Factor
-          Identifier: x
         Operation: <
         Factor
-      Assign Statement
-        Identifier: a
-        Factor
-          Number: 2
+          Identifier: x
+      Statement Sequence
+        Assign Statement
+          Identifier: fact
+          Factor
+            Number: 1
+        Repeat Statement
+          Statement Sequence
+            Assign Statement
+              Identifier: fact
+              Term
+                Factor
+                  Identifier: fact
+                Operation: *
+                Factor
+                  Identifier: x
+            Assign Statement
+              Identifier: x
+              Simple Expression
+                Factor
+                  Identifier: x
+                Operation: -
+                Factor
+                  Number: 1
+          Relational Expression
+            Factor
+              Identifier: x
+            Operation: =
+            Factor

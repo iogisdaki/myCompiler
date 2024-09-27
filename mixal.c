@@ -7,6 +7,10 @@
 FILE *file1;
 
 int tempVarCounter = 0;  // counter for generating unique temporary variables
+int endifCounter = 0;
+int repeatCounter = 0;
+int trueCounter = 0;
+int doneCounter = 0;
 
 // function to get a new temporary variable for intermediate results
 const char* getNewTempVar() {
@@ -97,32 +101,33 @@ void genMixal(Node *node) {
             genMixal(node->data.if_statement.expression);
             fprintf(file1, "\tCMPA 0\n");  // compare result to 0(false)
             if (node->data.if_statement.statement_sequence2 != NULL) { // if it has else
-                fprintf(file1, "\tJE ELSE\n");  // jump to else if 0
+                fprintf(file1, "\tJE ELSE%d\n", endifCounter);  // jump to else if 0
                 genMixal(node->data.if_statement.statement_sequence1); // if true do the statement sequence of the if block
-                fprintf(file1, "\tJMP ENDIF\n");  // and skip else block
-                fprintf(file1, "ELSE"); // do the else block code
+                fprintf(file1, "\tJMP ENDIF%d\n", endifCounter);  // and skip else block
+                fprintf(file1, "ELSE%d", endifCounter); // do the else block code
                 genMixal(node->data.if_statement.statement_sequence2);
-                fprintf(file1, "ENDIF NOP\n");
+                fprintf(file1, "ENDIF%d NOP\n", endifCounter++);
             } else{
-                fprintf(file1, "\tJE ENDIF\n");  // jump to end if 0
+                fprintf(file1, "\tJE ENDIF%d\n", endifCounter);  // jump to end if 0
                 genMixal(node->data.if_statement.statement_sequence1); // if true do the statement sequence of the if block
-                fprintf(file1, "ENDIF NOP\n");
+                fprintf(file1, "ENDIF%d NOP\n", endifCounter++);
             }
             break;
         case NODE_REPEAT:
-            fprintf(file1, "REPEAT");
+            fprintf(file1, "REPEAT%d", repeatCounter);
             genMixal(node->data.repeat_statement.statement_sequence);
             genMixal(node->data.repeat_statement.expression);
             fprintf(file1, "\tCMPA 0\n");  // compare result to 0(false)
-            fprintf(file1, "\tJE REPEAT\n");  // if until condition is false loop (equal to 0 because we do cmpa 0)
+            fprintf(file1, "\tJE REPEAT%d\n", repeatCounter);  // if until condition is false loop (equal to 0 because we do cmpa 0)
+            repeatCounter++;
             break;
         case NODE_READ:
-            fprintf(file1, "\tIN 16\n"); // read from device 16 (terminal)
+            fprintf(file1, "\tIN 16\n"); // read from device 16 (card)
             fprintf(file1, "\tSTA %s\n", node->data.read_statement.identifier);
             break;
         case NODE_WRITE:
             fprintf(file1, "\tLDA %s\n", node->data.read_statement.identifier);            
-            fprintf(file1, "\tOUT 16\n");// write to device 16 (terminal)
+            fprintf(file1, "\tOUT 19\n");// write to device 16 (terminal)
             break;
         case NODE_RELATIONAL_EXPRESSION:
             genMixal(node->data.relational_expression.relational_expression);  // evaluate the left hand side
@@ -134,18 +139,18 @@ void genMixal(Node *node) {
             fprintf(file1, "\tLDA %s\n", leftTempVar);  // load the left hand result into the accumulator
             if (node->data.relational_expression.operation == '<') {
                 fprintf(file1, "\tCMPA %s\n", rightTempVar);  // compare accumulator with the right-hand result
-                fprintf(file1, "\tJL TRUE\n"); // if its less then jump to true
+                fprintf(file1, "\tJL TRUE%d\n", trueCounter); // if its less then jump to true
                 fprintf(file1, "\tLDA  =0=\n"); 
-                fprintf(file1, "\tJMP DONE\n");
-                fprintf(file1, "TRUE LDA  =1=\n");
-                fprintf(file1, "DONE NOP\n");
+                fprintf(file1, "\tJMP DONE%d\n", doneCounter);
+                fprintf(file1, "TRUE%d LDA  =1=\n", trueCounter++);
+                fprintf(file1, "DONE%d NOP\n", doneCounter++);
             }else if (node->data.relational_expression.operation == '='){
                 fprintf(file1, "\tCMPA %s\n", rightTempVar);  // compare accumulator with the right-hand result
-                fprintf(file1, "\tJE TRUE\n");  // if its equal jump to true
+                fprintf(file1, "\tJE TRUE%d\n", trueCounter);  // if its equal jump to true
                 fprintf(file1, "\tLDA  =0=\n"); 
-                fprintf(file1, "\tJMP DONE\n");
-                fprintf(file1, "TRUE LDA  =1=\n");
-                fprintf(file1, "DONE NOP\n");
+                fprintf(file1, "\tJMP DONE%d\n", doneCounter);
+                fprintf(file1, "TRUE%d LDA  =1=\n", trueCounter++);
+                fprintf(file1, "DONE%d NOP\n", doneCounter++);
             }
             break;
         default:
