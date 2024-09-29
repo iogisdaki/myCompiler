@@ -1,7 +1,7 @@
-<u>NOTE:</u>
+<ins>NOTE</ins>:<br>
 There is a problem with the mixal IN and OUT commands. It compiles but it can't find the in/out devices so you can't give it input form outside the program (only with assignment) or print any output.
 
-<u>Requirements:</u>
+<ins>Requirements</ins>:<br>
 You need to have flex installed if you're on debian linux write:
 ```
 sudo apt-get update
@@ -14,7 +14,7 @@ sudo apt update
 sudo apt install mdk
 ```
 
-<u>About the code:</u>
+<ins>About the code</ins>:<br>
 
 To make the parser run:
 ```
