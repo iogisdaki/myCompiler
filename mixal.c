@@ -127,7 +127,7 @@ void genMixal(Node *node) {
             break;
         case NODE_WRITE:
             fprintf(file1, "\tLDA %s\n", node->data.read_statement.identifier);            
-            fprintf(file1, "\tOUT 19\n");// write to device 16 (terminal)
+            fprintf(file1, "\tOUT 17\n");// write to device 16 (terminal)
             break;
         case NODE_RELATIONAL_EXPRESSION:
             genMixal(node->data.relational_expression.relational_expression);  // evaluate the left hand side
