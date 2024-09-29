@@ -40,7 +40,7 @@ To run the mixal code run:
 ```
 mixasm result.mixal
 ```
-And then run:
+And then to interactively check the registers run:
 ```
 mixvm result.mix 
 ```
@@ -52,8 +52,7 @@ and you can check the registers using
 ```
 pmem <register number>
 ```
-to interactively check the registers or:
+Or to run it non-interactively.:
 ```
 mixvm -r result.mix
 ```
-to run it uninteractively.
